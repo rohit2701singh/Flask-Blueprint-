@@ -105,7 +105,7 @@ def remove_profile_image():
 
     if current_user.image_file != 'default.jpg':
         
-        previous_img_path = os.path.join(app.root_path, 'static/profile_pics', current_user.image_file)
+        previous_img_path = os.path.join(current_app.root_path, 'static/profile_pics', current_user.image_file)
 
         if os.path.isfile(previous_img_path):
             os.remove(previous_img_path)    # remove previous image then set it to default

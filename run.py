@@ -1,4 +1,4 @@
-from myapp import create_app  # import from __init__.py file
+from myapp import create_app  # import from myapp's __init__.py  file
 
 app = create_app()
 

@@ -1,3 +1,5 @@
+# THIS PAGE IS APPLICATION FACTORY
+
 # Creates the Flask app instance, Loads configurations
 # Initializes extensions like SQLAlchemy & Flask-Login
 # Registers Blueprints (for modular routing)
@@ -22,7 +24,7 @@ login_manager.login_message_category = "info"
 
 def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config_class)
 
     db.init_app(app)    # initialise extension here
     bcrypt.init_app(app)
@@ -32,7 +34,7 @@ def create_app(config_class=Config):
     from myapp.posts.routes import posts
     from myapp.main.routes import main
 
-    app.register_blueprint(users)   # registering routes of bluprint instances
+    app.register_blueprint(users)   # registering bluprints 
     app.register_blueprint(posts)
     app.register_blueprint(main)
 
