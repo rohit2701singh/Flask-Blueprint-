@@ -3,9 +3,9 @@ from myapp.users.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from flask_login import current_user, login_required, login_user, logout_user
 from myapp import bcrypt, db
 from myapp.models import User, Post
-from myapp.users.utils import save_picture
+from myapp.users.utils import save_picture, remove_user_image
 import os   # move this to users/utils.py and some part of remove_img function
-from flask import current_app
+
 
 
 
@@ -102,22 +102,14 @@ def account():
 @users.route('/remove_img', methods=['GET', 'POST'])
 @login_required
 def remove_profile_image():
-
-    if current_user.image_file != 'default.jpg':
-        
-        previous_img_path = os.path.join(current_app.root_path, 'static/profile_pics', current_user.image_file)
-
-        if os.path.isfile(previous_img_path):
-            os.remove(previous_img_path)    # remove previous image then set it to default
-
+    if remove_user_image(current_user.image_file):  # Call the utility function
         current_user.image_file = 'default.jpg'
         db.session.commit()
-
         flash('Your profile picture has been removed.', 'warning')
     else:
         flash("Can't remove. Image is already the default one.", 'warning')
 
-    return redirect(url_for('users.account'))  # Redirect to the profile page or where necessary
+    return redirect(url_for('users.account'))
 
 
 @users.route("/user/<string:username>")
