@@ -39,3 +39,13 @@ def no_leading_trailing_spaces(form, field):    # (form, field) automatically pa
     if field.name == "password" and " " in field.data:
         raise ValidationError("Password cannot contain spaces.")
 
+
+def remove_user_image(image_filename):
+    """Deletes a user's profile image if it's not the default one."""
+    if image_filename != "default.jpg":
+        image_path = os.path.join(current_app.root_path, "static/profile_pics", image_filename)
+
+        if os.path.isfile(image_path):
+            os.remove(image_path)
+        return True
+    return False
