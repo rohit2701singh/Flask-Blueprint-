@@ -7,8 +7,6 @@ from myapp.users.utils import save_picture, remove_user_image
 import os   # move this to users/utils.py and some part of remove_img function
 
 
-
-
 users = Blueprint('users', __name__)
 
 

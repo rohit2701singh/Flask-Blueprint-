@@ -9,3 +9,4 @@ class Config:
     CKEDITOR_ENABLE_CODESNIPPET = True
     CKEDITOR_HEIGHT = 300
     CKEDITOR_PKG_TYPE = 'full'
+    FLASK_ADMIN_SWATCH = 'cerulean'

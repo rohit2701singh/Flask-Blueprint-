@@ -11,7 +11,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from myapp.config import Config
 from flask_ckeditor import CKEditor
-
+from flask_admin import Admin
 
 db = SQLAlchemy()
 
@@ -23,6 +23,8 @@ login_manager.login_message_category = "info"
 
 ckeditor = CKEditor()
 
+admin = Admin(name='App Admin Page') # /admin in URL
+    
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -32,6 +34,13 @@ def create_app(config_class=Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     ckeditor.init_app(app)
+
+    from myapp.models import User, Post # import here to avoid circular import
+    from myapp.admin_views.views import UserView, PostView, MyAdminIndexView
+
+    admin.init_app(app, index_view=MyAdminIndexView())
+    admin.add_view(UserView(User, db.session))
+    admin.add_view(PostView(Post, db.session))
 
     from myapp.users.routes import users    # importing bluprint instance 'users'
     from myapp.posts.routes import posts
