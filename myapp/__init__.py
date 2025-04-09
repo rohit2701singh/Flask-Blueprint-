@@ -10,6 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from myapp.config import Config
+from flask_ckeditor import CKEditor
 
 
 db = SQLAlchemy()
@@ -20,6 +21,7 @@ login_manager = LoginManager()
 login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 
+ckeditor = CKEditor()
 
 
 def create_app(config_class=Config):
@@ -29,6 +31,7 @@ def create_app(config_class=Config):
     db.init_app(app)    # initialise extension here
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    ckeditor.init_app(app)
 
     from myapp.users.routes import users    # importing bluprint instance 'users'
     from myapp.posts.routes import posts

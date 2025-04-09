@@ -3,6 +3,8 @@ from myapp.posts.forms import PostForm
 from myapp.models import Post
 from flask_login import login_required, current_user
 from myapp import db
+from myapp.posts.utils import allowed_tags, custom_attrs
+import bleach
 
 posts = Blueprint('posts', __name__)
 
@@ -23,7 +25,9 @@ def all_posts():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        content_data = bleach.clean(form.content.data, tags=allowed_tags, attributes=custom_attrs) 
+        
+        post = Post(title=form.title.data, content=content_data, author=current_user)
         db.session.add(post)
         db.session.commit()
 
@@ -51,7 +55,7 @@ def update_post(post_id):
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
-        post.content = form.content.data
+        post.content = bleach.clean(form.content.data, tags=allowed_tags, attributes=custom_attrs)
         db.session.commit()
         flash(message="Your post has been updated!", category='success')
         return redirect(url_for('posts.post_details', post_id=post.id))

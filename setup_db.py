@@ -1,6 +1,12 @@
 # If you have a fresh project or have deleted your database, 
 # you need to run the setup_db.py script to create the database and tables.
 
+# this is a good approach for development when setting up a fresh database.
+# but if you later add or modify columns, you’ll need to manually delete/recreate the database.
+# However, for a production-ready approach, Flask-Migrate (flask db migrate) is preferred
+# Flask-Migrate allows incremental updates without data loss.
+
+
 from myapp import create_app, db
 
 app = create_app()
