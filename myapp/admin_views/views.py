@@ -10,7 +10,7 @@ from flask_admin import AdminIndexView, expose
 class MyAdminIndexView(AdminIndexView):
     """Custom admin index (dashboard) view.
     
-    Only accessible to users with the 'Admin' role. Unauthorized users are 
+    Only accessible to users with the 'admin' role. Unauthorized users are 
     redirected to the login page with a flash message when accessing the dashboard.
     """
     
@@ -21,8 +21,7 @@ class MyAdminIndexView(AdminIndexView):
         return super().index()
 
     def is_accessible(self):
-        # return current_user.is_authenticated and current_user.role == 'Admin'
-        return current_user.is_authenticated
+        return current_user.is_authenticated and current_user.role.lower() == 'admin'
 
     def inaccessible_callback(self, name, **kwargs):
         flash('You need admin access to view the dashboard.', 'warning')
@@ -32,14 +31,13 @@ class MyAdminIndexView(AdminIndexView):
 class AdminModelView(ModelView):
     """Custom base class for all admin model views.
     
-    Restricts access to authenticated users with the 'Admin' role.
+    Restricts access to authenticated users with the 'admin' role.
     Protects admin URLs like /admin/model-name/ from unauthorized access.
     If unauthorized, redirects the user to the login page.
     """
 
     def is_accessible(self):
-        # return current_user.is_authenticated and current_user.role == 'Admin'
-        return current_user.is_authenticated
+        return current_user.is_authenticated and current_user.role.lower() == 'admin'
     
     def inaccessible_callback(self, name, **kwargs):
         flash("You must be an admin to access this page.", "warning")
@@ -49,7 +47,7 @@ class AdminModelView(ModelView):
 class UserView(AdminModelView):
     """Admin view for managing User models.
 
-    Inherits access control from AdminModelView to ensure only Admin users
+    Inherits access control from AdminModelView to ensure only admin users
     can create, edit, delete, or export User records from the admin panel.
     """
 
@@ -58,13 +56,15 @@ class UserView(AdminModelView):
     can_delete = True
     can_export = True
     
-    form_columns = ["username", "email", "password", "image_file"]
+    form_columns = ["username", "email", "password", "image_file", "role"]
 
-    column_list = ['id', 'username', 'email', 'password', 'image_file']
-    column_labels = {'id': 'Id', 'username': 'Username', 'email': 'Email Address', 'password': 'Password', 'image_file': 'Image File'}
-    column_filters = ['id', 'username', 'email', 'image_file']
-    column_editable_list = ['username', 'email', 'image_file']
-    column_searchable_list = ['username', 'email']
+    column_list = ['id', 'username', 'email', 'password', 'image_file', 'role']
+    column_labels = {'id': 'Id', 'username': 'Username', 'email': 'Email Address',
+                      'password': 'Password', 'image_file': 'Image File', 'role': 'Role'}
+    
+    column_filters = ['id', 'username', 'email', 'image_file', 'role']
+    column_editable_list = ['username', 'email', 'image_file', 'role']
+    column_searchable_list = ['username', 'email', 'role']
     column_default_sort = 'id'  # use tuple to control ascending descending order. only string=>ascending, ('id', True) True=>decending order 
     
     column_formatters = dict(password=lambda v, c, m, p: m.password[:5] + '***********' + m.password[-5:])
@@ -81,7 +81,7 @@ class UserView(AdminModelView):
 class PostView(AdminModelView):
     """Admin view for managing Post models.
 
-    Extends AdminModelView to restrict access to Admin users only.
+    Extends AdminModelView to restrict access to admin users only.
     Allows creating, editing, deleting, and exporting post records
     within the admin interface.
     """
