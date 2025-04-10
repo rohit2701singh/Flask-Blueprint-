@@ -53,11 +53,21 @@
             <div class="profile-content">
 
                {% if posts.items | length == 0 %}
-                  <div class="d-flex align-items-center justify-content-center mt-5 p-3 border border-4 border-info rounded text-center">
-                     <p class="mb-0">
-                        No posts yet. Be the first to <a href="{{ url_for('posts.new_post') }}">write one</a>!
-                     </p>
-                  </div>
+               
+                  {% if current_user.is_authenticated %}
+                     <div class="d-flex align-items-center justify-content-center mt-5 p-3 border border-4 border-info rounded text-center">
+                        <p class="mb-0">
+                           No posts yet. Be the first to <a href="{{ url_for('posts.new_post') }}">write one</a>!
+                        </p>
+                     </div>
+                  {% else %}
+                     <div class="d-flex align-items-center justify-content-center mt-5 p-3 border border-4 border-info rounded text-center">
+                        <p class="mb-0">
+                           There are no posts yet.
+                        </p>
+                     </div>
+                  {% endif %}
+
                {% else %}
 
                   <!-- begin tab-content -->

@@ -31,6 +31,7 @@
                 <tr>
                     <th scope="col">Match Number</th>
                     <th scope="col">Match Date</th>
+                    <th scope="col">Match Day</th>
                     <th scope="col">Match Time</th>
                     <th scope="col">Team 1</th>
                     <th scope="col">Team 2</th>
@@ -38,21 +39,27 @@
                     <th scope="col">Venue City</th>
                 </tr>
                 </thead>
+
                 <tbody>
-
                 {% for data in full_data %}
-                <tr>
-                    <th scope="row">{{ data["match number"] }}</th>
-                    <td>{{ data["match date"] }}</td>
-                    <td>{{ data["match time"] }}</td>
-                    <td>{{ data["team 1"] }}</td>
-                    <td>{{ data["team 2"] }}</td>
-                    <td>{{ data["venue ground"] }}</td>
-                    <td>{{ data["venue city"] }}</td>
-                </tr>
-                {% endfor %}
 
+                    <tr {% if data.match_datetime.date() < today %}
+                            style="text-decoration: line-through; text-decoration-color:red; background-color: rgba(140, 53, 53, 0.115);" 
+                        {% endif %}>
+
+                        <th scope="row">{{ data["match number"] }}</th>
+                        <td>{{ data["match date"] }}</td>
+                        <td>{{ data["match day"] }}</td>
+                        <td>{{ data["match time"] }}</td>
+                        <td>{{ data["team 1"] }}</td>
+                        <td>{{ data["team 2"] }}</td>
+                        <td>{{ data["venue ground"] }}</td>
+                        <td>{{ data["venue city"] }}</td>
+
+                    </tr>
+                {% endfor %}
                 </tbody>
+                
             </table>
         </div>
     </div>
