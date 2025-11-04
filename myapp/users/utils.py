@@ -19,7 +19,7 @@ def save_picture(form_picture):
 
     previous_img_path = os.path.join(current_app.root_path, 'static/profile_pics', current_user.image_file)
 
-    if current_user.image_file != 'default.jpg' and os.path.isfile(previous_img_path):    # delete users old pic if exist
+    if current_user.image_file != 'default.png' and os.path.isfile(previous_img_path):    # delete users old pic if exist
         os.remove(previous_img_path)
 
     # form_picture.save(picture_path)
@@ -42,7 +42,7 @@ def no_leading_trailing_spaces(form, field):    # (form, field) automatically pa
 
 def remove_user_image(image_filename):
     """Deletes a user's profile image if it's not the default one."""
-    if image_filename != "default.jpg":
+    if image_filename != "default.png":
         image_path = os.path.join(current_app.root_path, "static/profile_pics", image_filename)
 
         if os.path.isfile(image_path):

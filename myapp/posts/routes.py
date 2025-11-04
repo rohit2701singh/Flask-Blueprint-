@@ -8,6 +8,7 @@ import bleach
 
 posts = Blueprint('posts', __name__)
 
+@posts.route("/")
 @posts.route("/all_post")
 def all_posts():
     # posts = db.session.execute(db.select(Post).order_by(Post.id.desc())).scalars()

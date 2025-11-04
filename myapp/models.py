@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    image_file = db.Column(db.String, nullable=False, default='default.jpg')
+    image_file = db.Column(db.String, nullable=False, default='default.png')
     role = db.Column(db.String(20), nullable=False, default="user")
 
     posts = db.relationship('Post', back_populates='author', lazy=True)   # backpopulates requires defining the relationship in both models.

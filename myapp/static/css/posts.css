@@ -1,0 +1,97 @@
+/* ---------------------------
+   Profile Header
+---------------------------- */
+.profile-header {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+}
+
+.profile-img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border: 2px solid #007bff;
+    margin-right: 10px;
+}
+
+.profile-header a i {
+    margin-left: 6px;
+}
+
+/* ---------------------------
+   Post Card Styling
+---------------------------- */
+.post-card {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* ---------------------------
+   Post User Image
+---------------------------- */
+.post-user-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-right: 10px;
+}
+
+/* ---------------------------
+   Post Titles & Text
+---------------------------- */
+.post-title a {
+    color: #333;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.post-title a:hover {
+    color: #007bff;
+}
+
+/* ---------------------------
+   Post Content
+---------------------------- */
+.post-content {
+    margin-top: 10px;
+}
+
+
+/* ---------------------------
+   Like & Comment Buttons
+---------------------------- */
+.post-card .btn {
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 14px;
+}
+
+.post-card .btn:hover {
+    opacity: 0.9;
+}
+
+/* ---------------------------
+   Responsive
+---------------------------- */
+@media (max-width: 768px) {
+    .profile-header, .post-card {
+        padding: 1rem;
+    }
+
+    .post-content {
+        font-size: 0.9rem;
+    }
+}

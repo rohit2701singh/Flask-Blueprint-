@@ -1,159 +1,103 @@
 {% extends 'base.html'%}
 
 {% block style %}
-	 {{ super() }}
-	 <link href="{{ url_for('static', filename='css/timeline_post.css') }}" rel="stylesheet" />
-{% endblock %} 
+    <link href="{{ url_for('static', filename='css/posts.css') }}" rel="stylesheet" />
+{% endblock %}
 
 {% block content %}
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container mt-3">
-	 <div class="row">
-		  <div class="col-md-12">
-				<div id="content" class="content content-full-width">
-				<!-- begin profile-content -->
-					<div class="profile-content">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
 
-						<div class="d-flex align-items-center justify-content-center">
-							<img src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" alt="user image" 
-									class="rounded-circle me-2" 
-									style="width: 45px; height: 45px; object-fit: cover;">
-							<h1 class="text-center m-0 ml-3">Posts by {{ user.username }} ({{ posts.total }} posts)</h1>
-						</div>
+            <!-- User Header -->
+            <div class="profile-content text-center mb-4">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}"
+                         class="rounded-circle me-3"
+                         style="width: 55px; height: 55px; object-fit: cover; margin-right:6px">
+                    <h2 class="m-0">
+                        {{ user.username }}
+                        <small class="text-muted" style="font-size: 0.8rem;">• {{ posts.total }} Posts</small>
+                    </h2>
+                </div>
+            </div>
 
-						{% if posts.items | length == 0 %}
+            {% if posts.items | length == 0 %}
+                <div class="alert alert-info text-center mt-4">
+                    <p class="mb-0">
+                        No posts yet.
+                        {% if current_user == user %}
+                        <a href="{{ url_for('posts.new_post') }}">
+							Write your first post... 
+							<i class="fa fa-pencil ms-2"></i>
+						</a>
+                        {% endif %}
+                    </p>
+                </div>
+            {% else %}
+            
+            {% for post in posts.items %}
+            <div class="post-card p-4 mb-4 rounded shadow-sm">
 
-						<div class="d-flex align-items-center justify-content-center mt-5 p-3 border border-4 border-info rounded text-center">
-							<p class="mb-0">
-								 You have no posts yet.  
-								 <a href="{{ url_for('posts.new_post') }}" class="ms-1">Create a new post</a>
-							</p>
-					  	</div>
-					  
-
-						{% else %}
-						<!-- begin tab-content -->
-							<div class="tab-content p-0">
-							<!-- begin #profile-post tab -->
-								<div class="tab-pane fade active show" id="profile-post">
-									<!-- begin timeline -->
-									<ul class="timeline">
-
-										{% for post in posts.items %}
-										<li>
-											<!-- begin timeline-time -->
-											<div class="timeline-time">
-												<span class="date">{{ post.date_posted.strftime('%a, %d %b %Y') }}</span>
-												<span class="time">{{ post.date_posted.strftime('%I:%M%p') }}</span> <sub> (utc+5:30)</sub>
-											</div>
-											<!-- end timeline-time -->
-											<!-- begin timeline-icon -->
-											<div class="timeline-icon">
-												<a href="{{ url_for('posts.post_details', post_id=post.id) }}">&nbsp;</a>
-											</div>
-											<!-- end timeline-icon -->
-											<!-- begin timeline-body -->
-											<div class="timeline-body">
-												<div class="timeline-header">
-													<a href="{{ url_for('users.user_posts', username=post.author.username) }}">
-														<span class="userimage"><img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" alt="user image"></span>
-														<span class="username">{{ post.author.username }}</span>
-													</a>
-														
-														{% if current_user == post.author %}
-
-															<a href="{{ url_for('posts.update_post', post_id=post.id) }}" class="m-r-15 text-inverse-lighter">
-																<i class="fa fa-edit fa-fw fa-lg m-r-3 ml-4"></i> Edit Post</a>
-
-														{% endif %}
-
-													<span class="pull-right text-muted">18 Views</span>
-												</div>
-												<div class="timeline-content">
-													<h5 class="mb-2"><a href="{{ url_for('posts.post_details', post_id=post.id) }}">{{ post.title }}</a></h5> 
-														<p> {{ post.content|safe }} </p>
-
-												</div>
-												<div class="timeline-likes">
-													<div class="stats-right">
-														<span class="stats-text">259 Shares</span>
-														<span class="stats-text">21 Comments</span>
-													</div>
-													<div class="stats">
-														<span class="fa-stack fa-fw stats-icon">
-														<i class="fa fa-circle fa-stack-2x text-danger"></i>
-														<i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
-														</span>
-														<span class="fa-stack fa-fw stats-icon">
-														<i class="fa fa-circle fa-stack-2x text-primary"></i>
-														<i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
-														</span>
-														<span class="stats-total">4.3k</span>
-													</div>
-												</div>
-
-												{% if current_user.is_authenticated %}
-													<div class="timeline-footer">
-														<a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-														<a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-														<a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-													</div>
-													<div class="timeline-comment-box">
-														<div class="user">
-															<img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" alt="image">
-														</div>
-														<div class="input">
-															<form action="">
-																<div class="input-group">
-																	<input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-																	<span class="input-group-btn p-l-10">
-																	<button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-																	</span>
-																</div>
-															</form>
-														</div>
-													</div>
-												{% endif %}
-											</div>
-											<!-- end timeline-body -->
-										</li>
-
-										{% endfor %}
-
-									</ul>
-									<!-- end timeline -->        
-								</div>
-							<!-- end #profile-post tab -->
-							</div>
-							<!-- end tab-content -->
-						{% endif %}
-					
-				
-						<!-- Pagination Controls -->
-						<div class="container text-center">
-
-							{% for page_num in posts.iter_pages(left_edge=1, left_current=1, right_current=1, right_edge=1) %}
-
-								{% if page_num  %}
-									{% if page_num == posts.page %}
-										<a class="btn btn-info btn-md" href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
-
-									{% else %}
-										<a class="btn btn-outline-info btn-sm" href="{{ url_for('users.user_posts', username=user.username , page=page_num) }}">{{ page_num }}</a>
-									{% endif %}
-								{% else %}
-									.....
-								{% endif %}
-							{% endfor %}
-
-						</div>
+                <!-- Author + Date -->
+                <div class="d-flex align-items-center mb-3">
+					<img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
+							class="post-user-img rounded-circle me-3"
+							alt="User Image">
+					<div>
+						<h6 class="mb-0">{{ post.author.username }}</h6>
+						<small class="text-muted">{{ post.date_posted.strftime('%B %d, %Y at %I:%M %p') }}</small>
 					</div>
-				<!-- end profile-content -->
-			</div>
-		</div>
-	</div>
-</div>
+                </div>
 
+                <!-- Title + Edit Button -->
+                <div class="d-flex align-items-center mb-2">
+                    <h5 class="post-title mb-0">
+                        <a href="{{ url_for('posts.post_details', post_id=post.id) }}" class="text-decoration-none">
+                            {{ post.title }}
+                        </a>
+                    </h5>
+                    {% if current_user == post.author %}
+                        <a href="{{ url_for('posts.update_post', post_id=post.id) }}" class="text-muted ms-2">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Content -->
+                <div class="post-content mb-3">
+                    {{ post.content|safe }}
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-3">
+                    <button class="btn btn-sm btn-outline-primary">
+                        <i class="fa fa-thumbs-up"></i> Like
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fa fa-comments"></i> Comment
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <!-- Pagination -->
+            <div class="text-center mt-3">
+                {% for page_num in posts.iter_pages(left_edge=1, left_current=1, right_current=1, right_edge=1) %}
+                    {% if page_num %}
+                        <a class="btn {% if page_num == posts.page %}btn-info{% else %}btn-outline-info btn-sm{% endif %}"
+                           href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}">
+                            {{ page_num }}
+                        </a>
+                    {% else %}
+                        ...
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}

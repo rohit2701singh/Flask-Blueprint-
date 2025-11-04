@@ -101,7 +101,7 @@ def account():
 @login_required
 def remove_profile_image():
     if remove_user_image(current_user.image_file):  # Call the utility function
-        current_user.image_file = 'default.jpg'
+        current_user.image_file = 'default.png'
         db.session.commit()
         flash('Your profile picture has been removed.', 'warning')
     else:
