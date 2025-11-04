@@ -6,71 +6,71 @@
 
 {% block content %}
 
-<div class="d-flex container justify-content-center">
-  	<div class="col-md-10 mt-3">
-    <!-- Header Section -->
-    	<div class="p-3 rounded d-flex align-items-center" style="background-color: lightgray;">
-      	<!-- Profile Image -->
-      		<img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" alt="User Image"
-        		class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+<div class="container mt-5">
+	<div class="col-md-10 mx-auto">
 
-      		<!-- Title, Author & Action Buttons -->
-      		<div class="container ml-2">
-				<h1 class="mb-1">{{ post.title }}</h1>
-				<p class="mb-2">
-					Author:
+		<!-- Header Section -->
+		<div class="p-3 rounded d-flex align-items-center shadow-sm" style="background-color: #f8f9fa;">
+			<!-- Profile Image -->
+			<img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" alt="User Image"
+				class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+
+			<!-- Title, Author & Actions -->
+			<div class="ml-3 w-100">
+				<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+					<h3 class="mb-2 mb-md-0">{{ post.title }}</h3>
+
+					{% if current_user == post.author %}
+					<div class="d-flex flex-column flex-md-row">
+						<a href="{{ url_for('posts.update_post', post_id=post.id) }}"
+							class="text-info mb-2 mb-md-0 mr-md-3">
+							<i class="fa fa-edit"></i> Edit
+						</a>
+						<a href="#" class="text-danger" data-toggle="modal" data-target="#deleteModal">
+							<i class="fa fa-trash"></i> Delete
+						</a>
+					</div>
+					{% endif %}
+				</div>
+				<p class="mb-0 text-muted">
+					By
 					<a href="{{ url_for('users.user_posts', username=post.author.username) }}">
 						{{ post.author.username }}
-					</a><br>
-          on: <span class="date">{{ post.date_posted.strftime('%a, %d %b %Y') }}</span>
-
+					</a>
+					• {{ post.date_posted.strftime('%a, %d %b %Y') }}
 				</p>
+			</div>
+		</div>
 
-				<!-- Action Buttons (Below Username) -->
-				{% if current_user == post.author %}
-				<div class="d-flex">
-					<a href="{{ url_for('posts.update_post', post_id=post.id) }}" class="text-dark me-3">
-						<i class="fa fa-edit fa-fw fa-lg"></i> Edit Post
-					</a>
-					<a href="#" class="text-dark" data-toggle="modal" data-target="#deleteModal">
-						<i class="fa fa-trash fa-fw fa-lg ml-2" style="color:red;"></i> Delete
-					</a>
-				</div>
-				{% endif %}
-      		</div>
-    	</div>
-
-    	<div class="mt-4">
-      		{{ post.content|safe }}
-    	</div>
-  	</div>
+		<!-- Post Content -->
+		<div class="card mt-4 shadow-sm">
+			<div class="card-body">
+				{{ post.content|safe }}
+			</div>
+		</div>
+	</div>
 </div>
 
-
-<!-- delete Modal -->
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-        <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
-          <input type="submit" value="Delete" class="btn btn-danger">
-        </form>
-
-      </div>
-    </div>
-  </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST" class="ml-2">
+					<input type="submit" value="Delete" class="btn btn-danger">
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
-
-
 
 {% endblock content %}
