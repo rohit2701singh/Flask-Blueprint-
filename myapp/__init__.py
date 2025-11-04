@@ -44,10 +44,8 @@ def create_app(config_class=Config):
 
     from myapp.users.routes import users    # importing bluprint instance 'users'
     from myapp.posts.routes import posts
-    from myapp.main.routes import main
 
     app.register_blueprint(users)   # registering bluprints 
     app.register_blueprint(posts)
-    app.register_blueprint(main)
 
     return app

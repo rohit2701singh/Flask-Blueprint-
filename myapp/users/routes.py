@@ -13,7 +13,7 @@ users = Blueprint('users', __name__)
 @users.route("/registration", methods=["GET", "POST"])
 def registration():
     if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+        return redirect(url_for('posts.all_posts'))
 
     registration_form = RegistrationForm()
 
@@ -36,7 +36,7 @@ def registration():
 @users.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+        return redirect(url_for('posts.all_posts'))
 
     login_form = LoginForm()
 
@@ -53,7 +53,7 @@ def login():
             next_page = request.args.get('next')
 
             flash(f"successfully logged in user {get_user.username}!", category="success")
-            return redirect(next_page or url_for('main.home'))
+            return redirect(next_page or url_for('posts.all_posts'))
         else:
             flash("please enter the correct details", category="danger")
 
@@ -68,7 +68,7 @@ def logout():
 
     logout_user()
     flash("User logged out successfully", category="info")
-    return redirect(url_for("main.home"))
+    return redirect(url_for("posts.all_posts"))
 
 
 @users.route("/account", methods=["GET", "POST"])
