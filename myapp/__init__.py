@@ -48,4 +48,8 @@ def create_app(config_class=Config):
     app.register_blueprint(users)   # registering bluprints 
     app.register_blueprint(posts)
 
+    # Automatically create tables if they don't exist..no need to run setup_db.py
+    with app.app_context():
+        db.create_all()
+
     return app
