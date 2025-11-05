@@ -14,3 +14,4 @@ SQLAlchemy==2.0.40
 WTForms==3.1.2  # (attribute error when creating user from admin page using WTForms 3.2.1 use WTForms<3.2.1)
 gunicorn==21.2.0
 psycopg2-binary==2.9.6
+pillow==10.2.0
